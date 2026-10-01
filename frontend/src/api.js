@@ -1,5 +1,6 @@
 // Small API client: attaches the JWT and turns errors into readable messages.
 const TOKEN_KEY = "bloodlink_token";
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 export const auth = {
   get token() { try { return localStorage.getItem(TOKEN_KEY); } catch { return null; } },
@@ -8,7 +9,7 @@ export const auth = {
 };
 
 export async function api(path, { method = "GET", body, params } = {}) {
-  let url = "/api" + path;
+  let url = API_BASE + "/api" + path;
   if (params) {
     const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v !== "" && v != null));
     if ([...qs].length) url += "?" + qs;
